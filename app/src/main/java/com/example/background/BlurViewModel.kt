@@ -50,6 +50,10 @@ class BlurViewModel(application: Application) : ViewModel() {
         // Add WorkRequest to Cleanup temporary images
 //        var continuation = workManager.beginWith(OneTimeWorkRequest.from(CleanUpWorker::class.java))
 
+        // Create charging constraint
+        val constraints = Constraints.Builder()
+            .setRequiresCharging(true)
+            .build()
         // Add WorkRequest to blur the image
         var continuation = workManager.beginUniqueWork(
             IMAGE_MANIPULATION_WORK_NAME,
@@ -63,6 +67,7 @@ class BlurViewModel(application: Application) : ViewModel() {
         // Add WorkRequests to blur the image the number of times requested
         for (i in 0 until blurLevel) {
             val blurBuilder = OneTimeWorkRequestBuilder<BlurWorker>()
+                .setConstraints(constraints)
 
             // Input the Uri if this is the first blur operation
             // After the first blur operation the input will be the output of previous
@@ -122,5 +127,8 @@ class BlurViewModel(application: Application) : ViewModel() {
            data.putString(KEY_IMAGE_URI, it.toString())
         }
         return data.build()
+    }
+    internal fun cancelWork() {
+        workManager.cancelUniqueWork(IMAGE_MANIPULATION_WORK_NAME)
     }
 }
