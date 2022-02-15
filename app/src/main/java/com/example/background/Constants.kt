@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// Specifies the name for the Java class or method which is generated from this element.
 @file:JvmName("Constants")
 
 package com.example.background
@@ -38,3 +39,7 @@ const val KEY_IMAGE_URI = "KEY_IMAGE_URI"
 const val TAG_OUTPUT = "OUTPUT"
 
 const val DELAY_TIME_MILLIS: Long = 3000
+
+// @JvmField:
+// Instructs the Kotlin compiler not to generate getters/setters for this property
+// and expose it as a field.
